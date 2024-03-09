@@ -7,6 +7,7 @@ import prisma from '@/app/lib/db'
 import { Button } from '@/components/ui/button';
 import { SubmitButton } from '@/app/components/SubmitButton';
 import { revalidatePath } from 'next/cache';
+import { Badge } from '@/components/ui/badge';
 
 async function getData(userId: string) {
   const data = await prisma.user.findUnique({
@@ -16,6 +17,7 @@ async function getData(userId: string) {
     select: {
       name: true,
       email: true,
+      accountType: true,
       colorScheme: true
     }
   })
@@ -45,15 +47,14 @@ const SettingsPage = async () => {
     revalidatePath('/', "layout")
   }
   return (
-    <div className='grid items-start gap-8'>
+    <div className='grid items-start gap-8 rounded-lg backdrop-blur-2xl'>
       <div className='flex items-center justify-between px-2'>
         <div className='grid gap-1'>
           <h1 className='text-3xl md:text-4xl'>Settings</h1>
           <p className='text-lg text-muted-foreground '>Your Profile settings</p>
         </div>
       </div>
-
-      <Card>
+      <Card className='m-2'>
         <form action={postData}>
           <CardHeader>
             <CardTitle>
@@ -65,16 +66,20 @@ const SettingsPage = async () => {
           </CardHeader>
           <CardContent>
             <div className='space-y-2'>
+            <Badge variant="destructive">{data?.accountType}</Badge>
               <div className='space-y-1'>
                 <Label>Upload your Photo</Label>
                 <h1>ne sum go napravil oshte uploadware</h1>
               </div>
             </div>
             <div className='space-y-2'>
-              <div className='space-y-1'>
+              <div className='space-y-1 w-full flex'>
+                <div className='flex-1'>        
                 <Label>Your Name</Label>
                 <Input name='name' type='text' id='name' placeholder='Enter your name'
                  defaultValue={data?.name ?? undefined}/>
+                </div>
+           
               </div>
               <div className='space-y-1'>
                 <Label>Your Email</Label>

@@ -16,6 +16,8 @@ async function getData(userId: string) {
         id: userId
     },
     select: {
+      email: true,
+      name: true,
       Notes: {
           select: {
             title: true,
@@ -53,10 +55,10 @@ const Home = async ({
 
   return (
     <section>
-      <div className='flex flex-col w-full'>
+      <div className='flex flex-col backdrop-blur-lg p-3 rounded-2xl w-full'>
         <div className="flex-col flex sm:flex-row justify-between ">
-          <div className="flex space-x-7 ">
-        <Avatar className='p-1 h-20 w-20 bg-accent rounded-full'>
+          <div className="flex space-x-7">
+        <Avatar className='p-1 h-32 w-32 bg-accent rounded-full'>
               <AvatarImage className="rounded-full" src={user?.picture as string} alt=''/>
               <AvatarFallback>
                 <Image
@@ -65,9 +67,9 @@ const Home = async ({
                 fill/>
               </AvatarFallback>
             </Avatar>
-        <div className="mt-1 flex flex-col space-y-1">
-        <h2 className="text-2xl">{user?.given_name}</h2>
-        <p className="text-sm text-muted-foreground">{user?.email}</p>
+        <div className="mt-3 flex flex-col space-y-1">
+        <h2 className="text-3xl">{data?.name}</h2>
+        <p className="text-base text-muted-foreground">{user?.email}</p>
         </div>
           </div>
         <div>

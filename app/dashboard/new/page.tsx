@@ -18,11 +18,10 @@ import { redirect } from 'next/navigation'
 import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue } from '@/components/ui/select'
 import { TypeOfNote } from '@/constants';
 
-
-
 const NewNoteRoute = async () => {
   const { getUser } = getKindeServerSession();
   const user = await getUser();
+
 
   async function postData(formData: FormData) {
     "use server"
@@ -44,7 +43,7 @@ const NewNoteRoute = async () => {
       },
       
     });
-    return redirect("/dashboard");
+    return redirect("/dashboard/mytickets");
   }
 
 

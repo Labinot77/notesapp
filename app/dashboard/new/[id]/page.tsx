@@ -102,9 +102,9 @@ export default async function DynamicRoute({params}: {params: { id: string }}) {
 
           <div className='space-y-1'>
                 <Label>Type</Label>
-                <Select name="type" defaultValue="No type">
+                <Select name="type" defaultValue={data?.type as string}>
                   <SelectTrigger className='w-full'>
-                    <SelectValue placeholder={data?.type}/>
+                    <SelectValue />
                   </SelectTrigger>
                     <SelectContent>
                       <SelectGroup>

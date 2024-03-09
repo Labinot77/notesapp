@@ -5,6 +5,8 @@ import { ThemeProvider } from "@/components/ui/theme-provider";
 import Navbar from "./components/Navbar";
 import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server";
 import prisma from "./lib/db";
+import { GridBackgroundDemo } from "./components/asda";
+import { BackgroundBeams } from "@/components/ui/background-beams.tsx";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -35,6 +37,8 @@ export default async function RootLayout({
   const {getUser} = getKindeServerSession()
   const user = await getUser()
   const data = await getData(user?.id as string)
+
+  
   return (
     <html lang="en">
       <body className={`${inter.className} ${data?.colorScheme ?? 'theme-orange'}`}>
@@ -46,6 +50,7 @@ export default async function RootLayout({
         >
           <Navbar />
           {children}
+          <BackgroundBeams className="-z-10"/> 
         </ThemeProvider>
       </body>
     </html>

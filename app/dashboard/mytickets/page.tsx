@@ -6,6 +6,17 @@ import { Edit, File } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import { revalidatePath } from "next/cache";
 import { DialogDemo } from "@/app/components/DeleteNoteModal";
+import { TrashDelete } from "@/app/components/SubmitButton";
+
+import {
+  Pagination,
+  PaginationContent,
+  PaginationEllipsis,
+  PaginationItem,
+  PaginationLink,
+  PaginationNext,
+  PaginationPrevious,
+} from "@/components/ui/pagination"
 
 
 async function getData(userId: string) {
@@ -35,14 +46,29 @@ async function getData(userId: string) {
 
 
 
+
 const DashboardPage = async () => {
   const { getUser } = getKindeServerSession();
   const user = await getUser();
   const data = await getData(user?.id as string);
 
+  async function deleteNote(formData: FormData) {
+    "use server";
+
+    const noteId = formData.get("noteId") as string;
+
+    await prisma.note.delete({
+      where: {
+        id: noteId,
+      },
+    });
+
+    revalidatePath("/dasboard");
+  }
+
 
   return (
-    <div className="grid items-start gap-y-8 mb-5z">
+    <div className="grid items-start gap-y-8 backdrop-blur-lg p-3 rounded-2xl">
     <div className="flex items-center justify-between px-2 flex-col sm:flex-row">
       <div className="grid gap-1">
         <h1 className="text-3xl md:text-4xl text-center sm:text-start">Your Notes</h1>
@@ -106,14 +132,11 @@ const DashboardPage = async () => {
                   <Edit className="w-4 h-4" />
                 </Button>
               </Link>
-              {/* <form action={DialogDemo}>
-                <input type="hidden" name="noteId" value={item.id} />
-                <TrashDelete />
-              </form> */}
-              <DialogDemo />
+              <DialogDemo noteId={item.id} deleteNote={deleteNote}/>              
             </div>
           </Card>
         ))}
+
       </div>
     )}
   </div>

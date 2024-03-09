@@ -16,6 +16,8 @@ model User {
   email            String        @unique
   stripeCustomerId String?       @unique
   colorScheme      String        @default("theme-orange")
+  accountType      String        @default("User")
+  image            String       
   Notes            Note[]
 }
 

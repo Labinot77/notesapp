@@ -1,31 +1,36 @@
-import { CreditCard, Home, PersonStandingIcon, PresentationIcon, Settings } from "lucide-react";
+import { CreditCard, Home, PresentationIcon, Settings } from "lucide-react";
 
 export const navItems = [
   {
     name: 'Home', 
     href: "/dashboard", 
     icon: Home,
+    role: "User"
   },
   {
     name: 'My Tickets', 
     href: "/dashboard/mytickets", 
     icon: Home,
+    role: "User"
   },
   {
     name: 'Profiles', 
     href: "/dashboard/profiles", 
     icon: PresentationIcon,
+    role: "User"
   },
   {
     name: 'Settings', 
     href: "/dashboard/settings",
-     icon: Settings,
+    icon: Settings,
+    role: "User"
   },
-  // {
-  //   name: 'Billing', 
-  //   href: "/dashboard/billing", 
-  //   icon: CreditCard,
-  // }
+  {
+    name: 'Admin', 
+    href: "/dashboard/admin", 
+    icon: CreditCard,
+    role: "Admin"
+  }
 ]
 
 export const typeColor = [

@@ -9,20 +9,36 @@ import {
   LogoutLink,
 } from "@kinde-oss/kinde-auth-nextjs/components";
 import Image from 'next/image'
+import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server";
+import prisma from '../lib/db'
 
-interface UserNavDock {
-  name: string,
-  email: string,
-  image: string
-}
 
-const UserNavDock = ({ name, email, image}: UserNavDock) => {
+const UserNavDock = async () => {
+  const { isAuthenticated, getUser } = getKindeServerSession();
+  const user = await getUser()
+  const data = await userData(user?.id as string)
+  
+  async function userData(userId:string) {
+    const data = await prisma.user.findUnique({
+      where: {
+        id: userId
+      },
+      select: {
+        email: true,
+        name: true,
+        image: true,
+      },
+    })
+    return data  
+  }
+
   return (
       <DropdownMenu>
-        <DropdownMenuTrigger asChild>
+        <DropdownMenuTrigger  asChild>
           <Button variant="ghost" className='relative h-10 w-10 rounded-full'>
-            <Avatar className='h-10 w-10 rounded-full'>
-              <AvatarImage src={image} alt=''/>
+          <div className=' hover:p-[2px] hover: rounded-full transition-all'>
+            <Avatar className='h-10 w-10 rounded-full '>
+              <AvatarImage src={data?.image as string} alt=''/>
               <AvatarFallback>
                 <Image
                 fill
@@ -30,13 +46,14 @@ const UserNavDock = ({ name, email, image}: UserNavDock) => {
                 src="/pfp.jpg"/>
                 </AvatarFallback>
             </Avatar>
+                </div>
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent className='w-56' align='end' forceMount>
           <DropdownMenuLabel>
             <div className='flex flex-col space-y-1'> 
-              <p className='text-sm font-medium leading-none'>{name}</p>
-              <p className='text-xs leading-none text-muted-foreground'>{email}</p>
+              <p className='text-sm font-medium leading-none'>{data?.name}</p>
+              <p className='text-xs leading-none text-muted-foreground'>{data?.email}</p>
             </div>
           </DropdownMenuLabel>
           <DropdownMenuSeparator/>
@@ -46,7 +63,7 @@ const UserNavDock = ({ name, email, image}: UserNavDock) => {
               <DropdownMenuItem asChild key={i}>
                 <Link
                 href={item.href}
-                className='w-full flex justify-between items-center'>
+                className='w-full flex justify-between items-center cursor-pointer'>
                   {item.name}
                   <span><item.icon className='w-4 h-4'/></span>
                 </Link>
