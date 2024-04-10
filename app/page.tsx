@@ -1,13 +1,9 @@
-import Image from "next/image";
-import { ThemeToggle } from "./components/Themetoggle";
 import { Button } from "@/components/ui/button";
 import {
   RegisterLink,
 } from "@kinde-oss/kinde-auth-nextjs/components";
 import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server";
 import Link from "next/link";
-import { GridBackgroundDemo } from "./components/asda";
-import { BackgroundBeams } from "@/components/ui/background-beams.tsx";
 
 export default async function Home() {
   const { isAuthenticated } = getKindeServerSession()
