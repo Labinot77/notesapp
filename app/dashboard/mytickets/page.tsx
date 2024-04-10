@@ -6,7 +6,7 @@ import { Edit, File } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import { revalidatePath } from "next/cache";
 import { DialogDemo } from "@/app/components/DeleteNoteModal";
-import { TrashDelete } from "@/app/components/SubmitButton";
+import { TrashDelete } from "@/app/components/Buttons";
 
 import {
   Pagination,

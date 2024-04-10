@@ -1,4 +1,4 @@
-import { SubmitButton } from '@/app/components/SubmitButton'
+import { SubmitButton } from '@/app/components/Buttons'
 import { Button } from '@/components/ui/button'
 import {
   Card,
@@ -12,45 +12,14 @@ import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Textarea } from '@/components/ui/textarea'
 import Link from 'next/link'
-import prisma from '@/app/lib/db'
-import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server";
-import { redirect } from 'next/navigation'
 import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue } from '@/components/ui/select'
 import { TypeOfNote } from '@/constants';
+import { CreateTicketData } from '@/app/lib/actions/ticket.actions';
 
 const NewNoteRoute = async () => {
-  const { getUser } = getKindeServerSession();
-  const user = await getUser();
-
-
-  async function postData(formData: FormData) {
-    "use server"
-    
-    if (!user) {
-      throw new Error("Not authorized");
-    }
-
-    const title = formData.get("title") as string;
-    const description = formData.get("description") as string;
-    const NoteCategory = formData.get("NoteCategory") as string;
-
-    await prisma.note.create({
-      data: {
-        userId: user?.id,
-        description: description,
-        title: title,
-        type: NoteCategory || "No category"
-      },
-      
-    });
-    return redirect("/dashboard/mytickets");
-  }
-
-
-
   return (
     <Card>
-    <form action={postData}>
+    <form action={CreateTicketData}>
       <CardHeader>
         <CardTitle>New Note</CardTitle>
         <CardDescription>
@@ -101,7 +70,7 @@ const NewNoteRoute = async () => {
         <Button asChild variant="destructive">
           <Link href="/dashboard">Cancel</Link>
         </Button>
-        <SubmitButton />
+        <SubmitButton title='Your note has been created.' />
       </CardFooter>
     </form>
   </Card>

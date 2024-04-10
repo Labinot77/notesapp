@@ -1,3 +1,5 @@
+"use client"
+
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { Button } from '@/components/ui/button'
 import { DropdownMenu, DropdownMenuContent, DropdownMenuGroup, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from '@/components/ui/dropdown-menu'
@@ -11,26 +13,10 @@ import {
 import Image from 'next/image'
 import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server";
 import prisma from '../lib/db'
+import { toast } from '@/components/ui/use-toast'
 
 
-const UserNavDock = async () => {
-  const { isAuthenticated, getUser } = getKindeServerSession();
-  const user = await getUser()
-  const data = await userData(user?.id as string)
-  
-  async function userData(userId:string) {
-    const data = await prisma.user.findUnique({
-      where: {
-        id: userId
-      },
-      select: {
-        email: true,
-        name: true,
-        image: true,
-      },
-    })
-    return data  
-  }
+const UserNavDock = ({data}: {data: { image: string, name: string, email: string,}}) => {
 
   return (
       <DropdownMenu>
@@ -73,7 +59,10 @@ const UserNavDock = async () => {
           </DropdownMenuGroup>
           <DropdownMenuSeparator/>
           <DropdownMenuItem className='w-full flex justify-between items-center' asChild>
-            <LogoutLink>
+            <LogoutLink onClick={() => {
+        toast({
+          title: "Logged out"
+        })}}>
               Logout{""}
               <span>
                 <DoorClosed className='w-4 h-4'/>

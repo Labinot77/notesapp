@@ -1,11 +1,19 @@
 "use client"
 
 import { Button } from "@/components/ui/button"
+import { toast } from "@/components/ui/use-toast"
 import { ReloadIcon } from "@radix-ui/react-icons"
 import { Trash } from "lucide-react"
 import { useFormStatus } from "react-dom"
 
-export const SubmitButton = () => {
+
+interface Props {
+  title: string;
+  description?: string
+}
+
+
+export const SubmitButton = ({ title, description }: Props ) => {
   const {pending} = useFormStatus()
   return (
     <>  
@@ -15,7 +23,12 @@ export const SubmitButton = () => {
           Saving
         </Button>
     ): (
-      <Button type="submit">Save now</Button>
+      <Button type="submit" onClick={() => {
+        toast({
+          title: title,
+          description: description
+        })
+      }}>Save now</Button>
     )}
     </>
   )

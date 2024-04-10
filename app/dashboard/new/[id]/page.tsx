@@ -15,33 +15,19 @@ import prisma from "@/app/lib/db";
 import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server";
 import { redirect } from "next/navigation";
 import { revalidatePath, unstable_noStore as noStore } from "next/cache";
-import { SubmitButton }  from "@/app/components/SubmitButton";
+import { SubmitButton }  from "@/app/components/Buttons";
 import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { TypeOfNote } from "@/constants";
+import { FindUserTickets } from "@/app/lib/actions/ticket.actions";
 
-async function getData({ noteId }: { noteId: string }) {
-  noStore();
-  const data = await prisma.note.findUnique({
-    where: {
-      id: noteId,
-    },
-    select: {
-      title: true,
-      description: true,
-      id: true,
-      type: true
-    },
-  });
-  return data;
-}
 
 
 export default async function DynamicRoute({params}: {params: { id: string }}) {
   const { getUser } = getKindeServerSession();
   const user = await getUser();
-  const data = await getData({ noteId: params.id as string });
-
-  async function postData(formData: FormData) {
+  const data = await FindUserTickets({ noteId: params.id as string });
+  
+  async function UpdateTicketData(formData: FormData) {
     "use server";
 
     if (!user) throw new Error("you are not allowed");
@@ -69,7 +55,7 @@ export default async function DynamicRoute({params}: {params: { id: string }}) {
 
   return (
     <Card>
-      <form action={postData}>
+      <form action={UpdateTicketData}>
         <CardHeader>
           <CardTitle>Edit Note</CardTitle>
           <CardDescription>
@@ -127,7 +113,7 @@ export default async function DynamicRoute({params}: {params: { id: string }}) {
           <Button asChild variant="destructive">
             <Link href="/dashboard">Cancel</Link>
           </Button>
-          <SubmitButton />
+          <SubmitButton title="Succesfuly edited" />
         </CardFooter>
       </form>
     </Card>

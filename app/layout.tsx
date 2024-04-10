@@ -7,6 +7,7 @@ import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server";
 import prisma from "./lib/db";
 import { GridBackgroundDemo } from "./components/asda";
 import { BackgroundBeams } from "@/components/ui/background-beams.tsx";
+import { Toaster } from "@/components/ui/toaster";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -29,11 +30,7 @@ async function getData(userId: string) {
   }
 }
 
-export default async function RootLayout({
-  children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
+export default async function RootLayout({ children,}: Readonly<{ children: React.ReactNode }>) {
   const {getUser} = getKindeServerSession()
   const user = await getUser()
   const data = await getData(user?.id as string)
@@ -50,6 +47,7 @@ export default async function RootLayout({
         >
           <Navbar />
           {children}
+          <Toaster />
           <BackgroundBeams className="-z-10"/> 
         </ThemeProvider>
       </body>

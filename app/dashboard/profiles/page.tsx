@@ -1,57 +1,15 @@
 import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server";
-import prisma from "@/app/lib/db";
-import { Button } from "@/components/ui/button";
-import Link from "next/link";
-import { Input } from "@/components/ui/input";
-import { SelectSeparator } from "@/components/ui/select";
 import { Separator } from "@/components/ui/separator";
 import InputMenu from "@/app/components/OtherProfiles";
-
-async function getData(loggedInUserId: any) {
-  const data = await prisma.user.findMany({
-    select: {
-      id: true,
-      name: true,
-      email: true,
-      accountType: true,
-      image: true
-    },
-    where: {
-      id: {
-        not: loggedInUserId,
-      },
-    },
-  });
-
-  return data;
-}
-
-async function getForUserData(userId: any) {
-  const data = await prisma.user.findUnique({
-    where: {
-      id: userId,
-    },
-    select: {
-      id: true,
-      name: true,
-      email: true,
-      accountType: true,
-      image: true
-    },
-  });
-
-  return data;
-}
+import { getInformationForOtherUsers } from "@/app/lib/actions/user.actions";
 
 
   
 const OtherProfiles = async () => {
   const {getUser} = getKindeServerSession()
   const user = await getUser()
-  const userData = await getForUserData(user?.id as string)
   const loggedInUserId = user?.id;
-
-  const data = await getData(loggedInUserId)
+  const data = await getInformationForOtherUsers(loggedInUserId)
 
   return (
     <div className="flex flex-col items-start p-1 backdrop:blur-2xl rounded-lg gap-y-8 mb-5">
@@ -63,7 +21,7 @@ const OtherProfiles = async () => {
         </p>
       </div>
     </div >
-    <InputMenu userData={userData} data={data}/>
+    <InputMenu data={data} />
     </div>
   )
 }

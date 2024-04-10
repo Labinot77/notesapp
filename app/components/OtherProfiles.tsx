@@ -6,12 +6,21 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Separator } from '@/components/ui/separator'
-import Image from 'next/image'
 import Link from 'next/link'
 import React, { useState } from 'react'
 
-  
-const InputMenu = ({ data, userData }: any) => {
+interface DataTypes {
+    data: Array<{ // Define the type of data prop
+      id: string;
+      accountType: string
+      name: string | undefined | null;
+      email: string;
+      image: string;
+    }>;
+  };
+
+
+const InputMenu = ({ data }: DataTypes) => {
   const [searchValue, setSearchValue] = useState('');
 
   const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -33,7 +42,7 @@ const InputMenu = ({ data, userData }: any) => {
       {filteredData.map((item: any) => (
        <Card className="w-full flex p-2 items-center">
          <Avatar className='p-1 h-20 w-20 bg-accent rounded-full'>
-              <AvatarImage className="rounded-full" src={userData.image} alt=''/>
+              <AvatarImage className="rounded-full" src={item.image} alt=''/>
             </Avatar>
        <CardHeader>
          <CardTitle>{item.name}</CardTitle>
