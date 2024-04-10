@@ -15,7 +15,6 @@ interface DataTypes {
       accountType: string
       name: string | undefined | null;
       email: string;
-      image: string;
     }>;
   };
 
@@ -28,7 +27,6 @@ const InputMenu = ({ data }: DataTypes) => {
     setSearchValue(inputValue);
   };
 
-  // Filter data based on the searchValue
   const filteredData = data.filter(
     (item: any) => item.email.toLowerCase().includes(searchValue)
   );
@@ -40,7 +38,7 @@ const InputMenu = ({ data }: DataTypes) => {
       </div>
       <Separator/>
       {filteredData.map((item: any) => (
-       <Card className="w-full flex p-2 items-center">
+       <Card key={item.email} className="w-full flex p-2 items-center">
          <Avatar className='p-1 h-20 w-20 bg-accent rounded-full'>
               <AvatarImage className="rounded-full" src={item.image} alt=''/>
             </Avatar>

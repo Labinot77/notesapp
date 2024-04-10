@@ -95,8 +95,9 @@ export default async function DynamicRoute({params}: {params: { id: string }}) {
                     <SelectContent>
                       <SelectGroup>
                         <SelectLabel>What type of note</SelectLabel>
-                        {TypeOfNote.map((item, i) => (
+                        {TypeOfNote.map((item, idx) => (
                           <SelectItem
+                          key={idx}
                           value={item.name}>
                             {item.name}
                           </SelectItem>

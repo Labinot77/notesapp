@@ -54,9 +54,10 @@ const NewNoteRoute = async () => {
                   </SelectTrigger>
                     <SelectContent>
                       <SelectGroup>
-                        {TypeOfNote.map((item, i) => (
+                        {TypeOfNote.map((item, idx) => (
                           <SelectItem 
-                          value={item.name}>
+                            key={idx}
+                            value={item.name}>
                             {item.name}
                           </SelectItem>
                         ))}
